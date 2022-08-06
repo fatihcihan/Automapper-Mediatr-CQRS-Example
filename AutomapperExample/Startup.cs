@@ -1,3 +1,4 @@
+using AutomapperExample.MapperProfile;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,10 +29,13 @@ namespace AutomapperExample
         {
 
             services.AddControllers();
+            services.AddAutoMapper(typeof(CustomerProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutomapperExample", Version = "v1" });
             });
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
