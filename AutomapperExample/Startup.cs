@@ -1,4 +1,7 @@
+using AutoMapper;
 using AutomapperExample.MapperProfile;
+using AutomapperExample.Repositories;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,15 +30,26 @@ namespace AutomapperExample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //medaitr kullanmak icin de gerekli assembly'i verdik tum projeyi tarasin irequest ve irequesthandler'lari bulsun
+            services.AddMediatR(typeof(Startup));
+            services.AddSingleton<IProductRepository, ProductRepository>();
             services.AddControllers();
-            services.AddAutoMapper(typeof(CustomerProfile));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutomapperExample", Version = "v1" });
             });
 
-          
+            #region Automapper register
+            // auto mapper icin gerekli olan configurasyonlari burada yaparak IMapper interface'ini kullaniyoruz
+            var config = new MapperConfiguration(conf =>
+            {
+                conf.AddProfile<RegisterMapperProfile>();
+            });
+            services.AddScoped(s => config.CreateMapper());
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
