@@ -1,6 +1,10 @@
-﻿namespace AutomapperExample.MedHandlers.Commands.Requests
+﻿using MediatR;
+using System;
+
+namespace AutomapperExample.MedHandlers.Commands.Requests
 {
-    public class CreateProductCommandRequest
+    public class CreateProductCommandRequest : IRequest<Guid>       // geriye id donuyoruz
     {
+        public string Name { get; set; }
     }
 }
